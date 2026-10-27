@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associação Fair Play - Plataforma de Eventos Esportivos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fontes Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        fair: {
+                            green: '#000000',        /* Verde principal do Menu e Rodapé */
+                            lightGreen: '#ffffff',   /* Verde intermediário / Hover */
+                            accent: '#40916c',       /* Verde diferenciado do Botão Cadastre-se / Ações */
+                            accentHover: '#90EE90',  /* Verde claro Hover */
+                            cardBg: '#f4f6f8',       /* Tom cinza bem leve puxando pro branco */
+                            cardBorder: '#e2e8f0',   /* Borda suave */
+                            darkText: '#0f172a',     /* Texto escuro legível */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth transitions e custom scrollbar */
+        html {
+            scroll-behavior: smooth;
+        }
+        .tab-panel {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out;
+        }
+        .tab-panel.active {
+            display: block;
+            opacity: 1;
+        }
+        .nav-link.active {
+            border-bottom: 3px solid #ffffff;
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+        .card-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col bg-white text-slate-800 antialiased font-sans">
+
+    <!-- CABEÇALHO DA ASSOCIAÇÃO FAIR PLAY -->
+    <header class="bg-fair-green text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- LOGO DA ASSOCIAÇÃO FAIR PLAY (COM VETOR FIEL) -->
+                <a href="javascript:void(0)" onclick="switchTab('inicio')" class="flex items-center space-x-3 group">
+                    <div class="w-12 h-12 flex items-center justify-center transition-transform group-hover:scale-105">
+                        <svg viewBox="0 0 300 200" class="w-full h-full text-white fill-current">
+                            <g fill="currentColor">
+                                <!-- Figura 1 (Trás) -->
+                                <circle cx="145" cy="50" r="13" />
+                                <path d="M125 75 C120 85, 105 100, 95 105 C90 108, 92 113, 98 111 C110 106, 125 93, 135 83 L120 115 C115 125, 105 138, 92 145 C87 148, 90 153, 97 150 C110 142, 122 128, 132 112 L142 90 C148 100, 155 110, 162 120 C168 128, 172 138, 175 148 C177 153, 183 150, 180 145 C176 133, 170 122, 162 112 L150 95 L160 85 C170 95, 182 102, 195 105 C200 106, 202 100, 196 98 C185 95, 175 88, 165 78 Z" />
+                                
+                                <!-- Figura 2 (Frente) -->
+                                <circle cx="195" cy="45" r="13" />
+                                <path d="M175 70 C170 80, 155 95, 145 100 C140 103, 142 108, 148 106 C160 101, 175 88, 185 78 L170 110 C165 120, 155 133, 142 140 C137 143, 140 148, 147 145 C160 137, 172 123, 182 107 L192 85 C198 95, 205 105, 212 115 C218 123, 222 133, 225 143 C227 148, 233 145, 230 140 C226 128, 220 117, 212 107 L200 90 L210 80 C220 90, 232 97, 245 100 C250 101, 252 95, 246 93 C235 90, 225 83, 215 73 Z" />
+                                
+                                <!-- Arco Base -->
+                                <path d="M70 140 Q 160 115 250 138 C 255 139, 255 144, 250 145 Q 160 122 70 147 C 65 148, 65 141, 70 140 Z" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] tracking-widest font-medium text-emerald-200 uppercase leading-none">Associação</span>
+                        <span class="text-xl font-black tracking-tight uppercase leading-tight">Fair Play</span>
+                    </div>
+                </a>
+
+                <!-- NAVEGAÇÃO DESKTOP -->
+                <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm text-emerald-100">
+                    <button id="nav-inicio" onclick="switchTab('inicio')" class="nav-link active px-3 py-2 rounded-t-md hover:text-white transition">Início</button>
+                    <button id="nav-eventos" onclick="switchTab('eventos')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Eventos Esportivos</button>
+                    <button id="nav-criar" onclick="switchTab('criar')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Criar / Divulgar</button>
+                    <button id="nav-como-funciona" onclick="switchTab('como-funciona')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Como Funciona</button>
+                    <button id="nav-sobre" onclick="switchTab('sobre')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Sobre Nós</button>
+                    <button id="nav-contato" onclick="switchTab('contato')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Contato</button>
+                    <button id="nav-login" onclick="switchTab('login')" class="nav-link px-3 py-2 rounded-t-md hover:text-white transition">Entrar</button>
+                    
+                    <!-- BOTÃO CADASTRE-SE EM VERDE DESTAQUE -->
+                    <button id="nav-cadastro" onclick="switchTab('cadastro')" class="ml-3 bg-fair-accent hover:bg-fair-accentHover text-white font-bold px-4 py-2 rounded-lg shadow-md transition transform active:scale-95 flex items-center space-x-2">
+                        <i class="fa-solid fa-user-plus text-xs"></i>
+                        <span>Cadastre-se</span>
+                    </button>
+                </nav>
+
+                <!-- BOTÃO HAMBÚRGUER MOBILE -->
+                <div class="lg:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="p-2 text-emerald-100 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENU DROPDOWN MOBILE -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-fair-green border-t border-emerald-800 px-4 pt-3 pb-6 space-y-2 text-sm font-medium">
+            <button onclick="switchTab('inicio')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Início</button>
+            <button onclick="switchTab('eventos')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Eventos Esportivos</button>
+            <button onclick="switchTab('criar')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Criar / Divulgar Evento</button>
+            <button onclick="switchTab('como-funciona')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Como Funciona</button>
+            <button onclick="switchTab('sobre')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Sobre Nós</button>
+            <button onclick="switchTab('contato')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Contato</button>
+            <button onclick="switchTab('login')" class="block w-full text-left px-3 py-2 rounded-md hover:bg-emerald-800 text-white">Entrar</button>
+            <button onclick="switchTab('cadastro')" class="block w-full text-center mt-3 bg-fair-accent hover:bg-fair-accentHover text-white font-bold py-2.5 rounded-lg shadow">Cadastre-se</button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <!-- ================= ABA 1: INÍCIO ================= -->
+        <section id="tab-inicio" class="tab-panel active">
+            <!-- HERO SECTION -->
+            <div class="relative bg-gradient-to-r from-fair-green to-fair-lightGreen text-white py-16 lg:py-24 px-4 sm:px-6 lg:px-8 shadow-inner overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                
+                <div class="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+                    <div class="text-center lg:text-left space-y-6">
+                        <span class="inline-block bg-emerald-800/80 text-emerald-200 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-emerald-600/50 shadow-sm">
+                            Plataforma Oficial de Esportes e Integração
+                        </span>
+                        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                            Movimentando Pessoas, <br class="hidden sm:inline"/>Conectando Atletas.
+                        </h1>
+                        <p class="text-emerald-100 text-base sm:text-xl max-w-3xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            Encontre torneios, corridas, campeonatos e jogos amistosos perto de você com a <strong class="font-semibold text-white">Associação Fair Play</strong>. Organização prática e transparente para o seu esporte.
+                        </p>
+
+                        <div class="pt-4 flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4">
+                            <button onclick="switchTab('eventos')" class="w-full sm:w-auto bg-white text-fair-green font-extrabold px-8 py-4 rounded-xl shadow-lg hover:bg-emerald-50 transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 text-base">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span>Achar Eventos Esportivos</span>
+                            </button>
+                            <button onclick="switchTab('criar')" class="w-full sm:w-auto bg-fair-accent hover:bg-fair-accentHover text-white font-extrabold px-8 py-4 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 text-base">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                <span>Divulgar Novo Evento</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relative hidden md:block">
+                        <div class="absolute -inset-4 bg-emerald-300/20 rounded-[2rem] blur-2xl"></div>
+                        <div class="relative overflow-hidden rounded-[2rem] border-4 border-white/20 shadow-2xl">
+                            <img src="https://saojoao.sc.gov.br/wp-content/uploads/2025/02/ESPORTES-EM-GERAL.jpg"
+                                 alt="Atletas praticando corrida ao ar livre"
+                                 class="w-full h-[360px] lg:h-[430px] object-cover"
+                                 loading="eager">
+                            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/70 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                <p class="text-2xl font-black">Seu próximo desafio começa aqui.</p>
+                                <p class="text-emerald-100 mt-1">Encontre pessoas, eventos e novas experiências esportivas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESTATÍSTICAS E DESTAQUES -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                    <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-emerald-100 text-fair-green rounded-xl flex items-center justify-center text-2xl font-bold shrink-0">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-800">+1.500</h3>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Eventos Realizados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-emerald-100 text-fair-green rounded-xl flex items-center justify-center text-2xl font-bold shrink-0">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-800">+25.000</h3>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Atletas Cadastrados</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-emerald-100 text-fair-green rounded-xl flex items-center justify-center text-2xl font-bold shrink-0">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-800">+90</h3>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Cidades Atendidas</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-emerald-100 text-fair-green rounded-xl flex items-center justify-center text-2xl font-bold shrink-0">
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-800">100%</h3>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Fair Play & Respeito</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARDS DE EVENTOS EM DESTAQUE NA HOME -->
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Próximos Eventos em Destaque</h2>
+                        <p class="text-sm text-slate-500 mt-1">Inscrições abertas para competições na sua região</p>
+                    </div>
+                    <button onclick="switchTab('eventos')" class="text-fair-green font-bold text-sm hover:underline flex items-center space-x-1">
+                        <span>Ver Todos os Eventos</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <div id="home-featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Gerado Dinamicamente via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABA 2: EVENTOS ESPORTIVOS ================= -->
+        <section id="tab-eventos" class="tab-panel max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-8">
+                <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mb-2">Busca Inteligente de Eventos</h1>
+                <p class="text-slate-600">Filtre por modalidade, localização, nível e data para encontrar a competição ideal.</p>
+            </div>
+
+            <!-- PAINEL DE FILTROS (CAIXAS EM CINZA MUITO CLARO) -->
+            <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder mb-10 shadow-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Busca por Nome -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Palavra-chave</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                            <input type="text" id="filter-keyword" oninput="applyFilters()" placeholder="Ex: Corrida, Torneio 3x3..." class="w-full pl-10 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Modalidade Esportiva -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Modalidade</label>
+                        <select id="filter-category" onchange="applyFilters()" class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                            <option value="">Todas as Modalidades</option>
+                            <option value="Futebol">Futebol / Futsal</option>
+                            <option value="Corrida">Corrida de Rua / Trail</option>
+                            <option value="Basquete">Basquete / 3x3</option>
+                            <option value="Vôlei">Vôlei / Beach Tennis</option>
+                            <option value="Ciclismo">Ciclismo / MTB</option>
+                            <option value="Skate">Skate / Esportes Radicais</option>
+                        </select>
+                    </div>
+
+                    <!-- Cidade / Estado -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Cidade ou Estado</label>
+                        <input type="text" id="filter-location" oninput="applyFilters()" placeholder="Ex: São Paulo, Rio, Osasco..." class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+
+                    <!-- Nível do Evento -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Nível de Competição</label>
+                        <select id="filter-level" onchange="applyFilters()" class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                            <option value="">Todos os Níveis</option>
+                            <option value="Iniciante / Amador">Iniciante / Amador</option>
+                            <option value="Livre / Recreativo">Livre / Recreativo</option>
+                            <option value="Intermediário">Intermediário</option>
+                            <option value="Avançado / Profissional">Avançado / Profissional</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center mt-5 pt-4 border-t border-slate-200 gap-3">
+                    <span id="events-count-badge" class="text-xs font-semibold text-slate-500 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                        Carregando eventos...
+                    </span>
+                    <button onclick="resetFilters()" class="text-xs font-bold text-fair-green hover:text-emerald-800 flex items-center space-x-1 underline">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Redefinir Filtros</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- GRELHA COMPLETA DE EVENTOS -->
+            <div id="events-list-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- MENSAGEM SEM RESULTADOS -->
+            <div id="no-events-view" class="hidden text-center py-16 bg-fair-cardBg rounded-2xl border border-dashed border-slate-300">
+                <i class="fa-solid fa-calendar-xmark text-5xl text-slate-300 mb-3"></i>
+                <h3 class="text-xl font-bold text-slate-700">Nenhum evento localizado</h3>
+                <p class="text-sm text-slate-500 mt-1">Tente ajustar seus termos de pesquisa ou cadastre seu próprio evento.</p>
+                <button onclick="switchTab('criar')" class="mt-4 bg-fair-accent hover:bg-fair-accentHover text-white font-bold px-5 py-2.5 rounded-xl text-sm shadow">
+                    Divulgar Evento Agora
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= ABA 3: CRIAR / DIVULGAR EVENTO ================= -->
+        <section id="tab-criar" class="tab-panel max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-8">
+                <span class="bg-emerald-100 text-fair-green text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Divulgação Gratuita</span>
+                <h1 class="text-3xl font-black text-slate-900 mt-2 mb-2">Cadastrar Novo Evento Esportivo</h1>
+                <p class="text-slate-600 text-sm">Preencha as informações para publicar o seu evento na rede da Associação Fair Play.</p>
+            </div>
+
+            <div class="bg-fair-cardBg p-6 sm:p-10 rounded-2xl border border-fair-cardBorder shadow-sm">
+                <form id="form-create-event" onsubmit="handleEventSubmission(event)" class="space-y-6">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nome Oficial do Evento *</label>
+                        <input type="text" required id="new-title" placeholder="Ex: 1º Torneio Comunitário de Futebol Society 2026" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Modalidade *</label>
+                            <select required id="new-category" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                                <option value="">Selecione...</option>
+                                <option value="Futebol">Futebol / Futsal</option>
+                                <option value="Corrida">Corrida de Rua</option>
+                                <option value="Basquete">Basquete</option>
+                                <option value="Vôlei">Vôlei / Beach Tennis</option>
+                                <option value="Ciclismo">Ciclismo</option>
+                                <option value="Skate">Skate / Radicais</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nível *</label>
+                            <select required id="new-level" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                                <option value="Iniciante / Amador">Iniciante / Amador</option>
+                                <option value="Livre / Recreativo" selected>Livre / Recreativo</option>
+                                <option value="Intermediário">Intermediário</option>
+                                <option value="Avançado / Profissional">Avançado / Profissional</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nº Vagas Abertas *</label>
+                            <input type="number" required min="1" id="new-vacancies" placeholder="Ex: 50" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Data do Evento *</label>
+                            <input type="date" required id="new-date" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Horário de Início *</label>
+                            <input type="time" required id="new-time" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Local / Endereço Completo *</label>
+                        <input type="text" required id="new-location" placeholder="Ex: Parque das Esportes - Quadra 2, São Paulo - SP" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Descrição Detalhada do Evento *</label>
+                        <textarea required id="new-description" rows="4" placeholder="Informe o regulamento básico, público-alvo, premiação se houver e recomendações para os atletas..." class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Organizador / Entidade *</label>
+                            <input type="text" required id="new-organizer" placeholder="Ex: Prof. Carlos / Liga Local" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Contato / WhatsApp *</label>
+                            <input type="text" required id="new-contact" placeholder="Ex: (11) 99999-9999" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" class="w-full sm:w-auto bg-fair-green hover:bg-fair-lightGreen text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Publicar Evento Agora</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= ABA 4: COMO FUNCIONA ================= -->
+        <section id="tab-como-funciona" class="tab-panel max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="bg-emerald-100 text-fair-green text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Passo a Passo</span>
+                <h1 class="text-3xl font-black text-slate-900 mt-2">Como Funciona a Associação Fair Play</h1>
+                <p class="text-slate-600 mt-2">Nossa missão é tornar a prática esportiva acessível, organizada e justa para todos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder text-center card-hover">
+                    <div class="w-16 h-16 bg-fair-accent text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-6 shadow-md">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">1. Crie seu Evento</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Qualquer organizador, professor ou comunidade pode publicar campeonatos e jogos gratuitamente na plataforma.
+                    </p>
+                </div>
+
+                <div class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder text-center card-hover">
+                    <div class="w-16 h-16 bg-fair-accent text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-6 shadow-md">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">2. Divulgue</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Alcançamos milhares de atletas cadastrados na região interessados na sua modalidade esportiva.
+                    </p>
+                </div>
+
+                <div class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder text-center card-hover">
+                    <div class="w-16 h-16 bg-fair-accent text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-6 shadow-md">
+                        <i class="fa-solid fa-person-running"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">3. Participe</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Atletas encontram os eventos, garantem suas vagas de forma simples e jogam com respeito e espírito esportivo.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABA 5: SOBRE NÓS ================= -->
+        <section id="tab-sobre" class="tab-panel max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="bg-fair-cardBg p-8 sm:p-12 rounded-2xl border border-fair-cardBorder">
+                <span class="bg-emerald-100 text-fair-green text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Nossa História</span>
+                <h1 class="text-3xl font-black text-slate-900 mt-3 mb-6">Sobre a Associação Fair Play</h1>
+                
+                <div class="space-y-4 text-slate-700 leading-relaxed text-base">
+                    <p>
+                        A <strong>Associação Fair Play</strong> nasceu com o propósito inegociável de incentivar a prática esportiva, promover a saúde e fortalecer os laços de respeito comunitário.
+                    </p>
+                    <p>
+                        Acreditamos que o esporte transforma vidas quando jogado com ética, igualdade de oportunidades e união. Por isso, criamos esta plataforma centralizada que conecta organizadores e praticantes de todas as idades.
+                    </p>
+                    <p class="pt-2 font-semibold text-fair-green">
+                        <i class="fa-solid fa-quote-left mr-2 text-emerald-300"></i> O verdadeiro Fair Play vai muito além das quadras e pistas: é uma atitude de vida.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABA 6: CONTATO ================= -->
+        <section id="tab-contato" class="tab-panel max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="mb-8">
+                <h1 class="text-3xl font-black text-slate-900 mb-2">Fale Conosco</h1>
+                <p class="text-slate-600 text-sm">Dúvidas, suporte para seu evento ou parcerias institucionais.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder text-center">
+                    <i class="fa-solid fa-envelope text-2xl text-fair-green mb-2"></i>
+                    <h4 class="font-bold text-slate-800 text-sm">E-mail</h4>
+                    <p class="text-xs text-slate-600 mt-1">contato@fairplay.org.br</p>
+                </div>
+                <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder text-center">
+                    <i class="fa-solid fa-phone text-2xl text-fair-green mb-2"></i>
+                    <h4 class="font-bold text-slate-800 text-sm">Telefone</h4>
+                    <p class="text-xs text-slate-600 mt-1">(11) 4003-8899</p>
+                </div>
+                <div class="bg-fair-cardBg p-6 rounded-2xl border border-fair-cardBorder text-center">
+                    <i class="fa-solid fa-location-dot text-2xl text-fair-green mb-2"></i>
+                    <h4 class="font-bold text-slate-800 text-sm">Sede</h4>
+                    <p class="text-xs text-slate-600 mt-1">São Paulo - SP, Brasil</p>
+                </div>
+            </div>
+
+            <form onsubmit="handleContactSubmission(event)" class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Seu Nome</label>
+                    <input type="text" required placeholder="Digite seu nome completo" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Seu E-mail</label>
+                    <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Mensagem</label>
+                    <textarea required rows="4" placeholder="Como podemos te ajudar?" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm"></textarea>
+                </div>
+                <button type="submit" class="bg-fair-green hover:bg-fair-lightGreen text-white font-bold px-6 py-3 rounded-xl shadow transition text-sm">
+                    Enviar Mensagem
+                </button>
+            </form>
+        </section>
+
+        <!-- ================= ABA 7: LOGIN ================= -->
+        <section id="tab-login" class="tab-panel max-w-md mx-auto px-4 py-12">
+            <div class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder shadow-sm text-center">
+                <div class="w-16 h-16 bg-emerald-100 text-fair-green rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-900 mb-1">Acessar Conta</h2>
+                <p class="text-slate-500 text-xs mb-6">Entre para gerenciar suas inscrições e eventos</p>
+
+                <form onsubmit="handleLoginSubmit(event)" class="space-y-4 text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">E-mail</label>
+                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Senha</label>
+                        <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                    <button type="submit" class="w-full bg-fair-green hover:bg-fair-lightGreen text-white font-bold py-3.5 rounded-xl shadow transition text-sm">
+                        Entrar na Conta
+                    </button>
+                </form>
+
+                <p class="mt-6 text-xs text-slate-600">
+                    Ainda não tem conta? 
+                    <button onclick="switchTab('cadastro')" class="text-fair-accent font-bold hover:underline">Cadastre-se grátis</button>
+                </p>
+            </div>
+        </section>
+
+        <!-- ================= ABA 8: CADASTRE-SE (VERDE DESTAQUE) ================= -->
+        <section id="tab-cadastro" class="tab-panel max-w-lg mx-auto px-4 py-12">
+            <div class="bg-fair-cardBg p-8 rounded-2xl border border-fair-cardBorder shadow-sm">
+                <div class="text-center mb-6">
+                    <span class="bg-emerald-100 text-fair-accent text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">Cadastro Rápido</span>
+                    <h2 class="text-2xl font-black text-slate-900 mt-2">Criar Nova Conta</h2>
+                    <p class="text-slate-500 text-xs mt-1">Junte-se à comunidade da Associação Fair Play</p>
+                </div>
+
+                <form onsubmit="handleRegistrationSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nome Completo *</label>
+                        <input type="text" required placeholder="Ex: Lucas Silva" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">E-mail *</label>
+                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Senha *</label>
+                            <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Perfil Principal *</label>
+                            <select class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                                <option>Atleta / Esportista</option>
+                                <option>Organizador de Eventos</option>
+                                <option>Treinador / Técnico</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- BOTÃO EM VERDE DESTAQUE -->
+                    <button type="submit" class="w-full bg-fair-accent hover:bg-fair-accentHover text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm mt-2">
+                        Finalizar Cadastro Gratuitamente
+                    </button>
+                </form>
+
+                <p class="mt-6 text-center text-xs text-slate-600">
+                    Já possui conta? 
+                    <button onclick="switchTab('login')" class="text-fair-green font-bold hover:underline">Fazer login</button>
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ DA ASSOCIAÇÃO FAIR PLAY (VERDE ESCURO INSTITUCIONAL) -->
+    <footer class="bg-fair-green text-white pt-12 pb-6 mt-16 border-t border-emerald-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <!-- Coluna 1 -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8">
+                            <svg viewBox="0 0 300 200" class="w-full h-full text-white fill-current">
+                                <g fill="currentColor">
+                                    <circle cx="145" cy="50" r="13" />
+                                    <path d="M125 75 C120 85, 105 100, 95 105 C90 108, 92 113, 98 111 C110 106, 125 93, 135 83 L120 115 C115 125, 105 138, 92 145 C87 148, 90 153, 97 150 C110 142, 122 128, 132 112 L142 90 C148 100, 155 110, 162 120 C168 128, 172 138, 175 148 C177 153, 183 150, 180 145 C176 133, 170 122, 162 112 L150 95 L160 85 C170 95, 182 102, 195 105 C200 106, 202 100, 196 98 C185 95, 175 88, 165 78 Z" />
+                                    <circle cx="195" cy="45" r="13" />
+                                    <path d="M175 70 C170 80, 155 95, 145 100 C140 103, 142 108, 148 106 C160 101, 175 88, 185 78 L170 110 C165 120, 155 133, 142 140 C137 143, 140 148, 147 145 C160 137, 172 123, 182 107 L192 85 C198 95, 205 105, 212 115 C218 123, 222 133, 225 143 C227 148, 233 145, 230 140 C226 128, 220 117, 212 107 L200 90 L210 80 C220 90, 232 97, 245 100 C250 101, 252 95, 246 93 C235 90, 225 83, 215 73 Z" />
+                                    <path d="M70 140 Q 160 115 250 138 C 255 139, 255 144, 250 145 Q 160 122 70 147 C 65 148, 65 141, 70 140 Z" />
+                                </g>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-base">Associação Fair Play</span>
+                    </div>
+                    <p class="text-xs text-emerald-200 leading-relaxed">
+                        Conectando atletas, incentivo ao esporte, organização transparente e integração comunitária.
+                    </p>
+                </div>
+
+                <!-- Coluna 2 -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-emerald-200 mb-3">Links Rápidos</h4>
+                    <ul class="space-y-2 text-xs text-emerald-100">
+                        <li><button onclick="switchTab('inicio')" class="hover:underline">Início</button></li>
+                        <li><button onclick="switchTab('eventos')" class="hover:underline">Eventos Esportivos</button></li>
+                        <li><button onclick="switchTab('criar')" class="hover:underline">Divulgar Torneio</button></li>
+                        <li><button onclick="switchTab('cadastro')" class="hover:underline">Cadastre-se</button></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3 -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-emerald-200 mb-3">Modalidades</h4>
+                    <ul class="space-y-2 text-xs text-emerald-100">
+                        <li>Futebol / Futsal</li>
+                        <li>Corridas de Rua</li>
+                        <li>Basquetebol 3x3</li>
+                        <li>Vôlei & Beach Tennis</li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 4 -->
+                <div>
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-emerald-200 mb-3">Redes Sociais</h4>
+                    <div class="flex space-x-4 text-xl text-emerald-200">
+                        <a href="javascript:void(0)" class="hover:text-white"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="javascript:void(0)" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="javascript:void(0)" class="hover:text-white"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-emerald-800/60 pt-6 text-center text-xs text-emerald-300">
+                <p>&copy; 2026 Associação Fair Play. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- MODAL DE INSCRIÇÃO NO EVENTO -->
+    <div id="registration-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-fair-green text-white px-6 py-5 flex items-center justify-between">
+                <div>
+                    <p class="text-emerald-200 text-xs font-bold uppercase tracking-wider">Inscrição no evento</p>
+                    <h2 id="registration-event-title" class="text-xl font-black mt-1">Garantir Minha Vaga</h2>
+                </div>
+                <button type="button" onclick="closeRegistrationModal()" class="text-white/80 hover:text-white text-2xl" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="registration-form" onsubmit="handleRegistrationSubmission(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nome Completo *</label>
+                    <input type="text" id="participant-name" required autocomplete="name"
+                           placeholder="Digite seu nome completo"
+                           class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">E-mail *</label>
+                    <input type="email" id="participant-email" required autocomplete="email"
+                           placeholder="seuemail@exemplo.com"
+                           class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">WhatsApp / Telefone *</label>
+                        <input type="tel" id="participant-phone" required autocomplete="tel"
+                               placeholder="(11) 99999-9999"
+                               class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Cidade *</label>
+                        <input type="text" id="participant-city" required autocomplete="address-level2"
+                               placeholder="Ex: São Paulo"
+                               class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-fair-green focus:outline-none text-sm">
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-xs text-slate-600">
+                    <i class="fa-solid fa-circle-info text-fair-green mr-1"></i>
+                    Seus dados serão usados para registrar sua participação neste evento.
+                </div>
+
+                <div class="flex flex-col-reverse sm:flex-row gap-3 pt-2">
+                    <button type="button" onclick="closeRegistrationModal()"
+                            class="w-full sm:w-1/3 border border-slate-300 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-50 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                            class="w-full sm:flex-1 bg-fair-green hover:bg-fair-lightGreen text-white font-extrabold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i>
+                        Confirmar Inscrição
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICAÇÃO TOAST -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl transition transform translate-y-24 opacity-0 flex items-center space-x-3 z-50 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-text" class="text-xs font-semibold">Operação realizada com sucesso!</span>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT COMPLETA -->
+    <script>
+        // BASE DE DADOS DE EVENTOS
+        let eventsDatabase = [
+            {
+                id: 1,
+                title: "Maratona e Corrida de Rua Fair Play 5k/10k",
+                category: "Corrida",
+                level: "Livre / Recreativo",
+                date: "2026-10-18",
+                dateFormatted: "18 de Outubro, 2026",
+                time: "07:00",
+                location: "Parque do Ibirapuera, São Paulo - SP",
+                vacancies: 120,
+                organizer: "Associação Fair Play",
+                description: "Etapa oficial de primavera com apoio de hidratação, cronometragem por chip e medalhas de participação."
+            },
+            {
+                id: 2,
+                title: "Copa Regional de Futebol Society 8v8",
+                category: "Futebol",
+                level: "Intermediário",
+                date: "2026-10-25",
+                dateFormatted: "25 de Outubro, 2026",
+                time: "14:00",
+                location: "Arena Esportiva, Osasco - SP",
+                vacancies: 16,
+                organizer: "Liga Amadora de Futebol",
+                description: "Torneio mata-mata com premiação em troféus e medalhas para campeão e vice. Arbitragem confederada."
+            },
+            {
+                id: 3,
+                title: "Desafio 3x3 de Basquete de Rua",
+                category: "Basquete",
+                level: "Livre / Recreativo",
+                date: "2026-11-02",
+                dateFormatted: "02 de Novembro, 2026",
+                time: "09:30",
+                location: "Quadra Pública, Campinas - SP",
+                vacancies: 24,
+                organizer: "Clube do Basquete",
+                description: "Inscrições abertas para quartetos (3 em quadra + 1 reserva). Categoria livre masculino e feminino."
+            },
+            {
+                id: 4,
+                title: "Open de Vôlei de Praia e Beach Tennis",
+                category: "Vôlei",
+                level: "Iniciante / Amador",
+                date: "2026-11-12",
+                dateFormatted: "12 de Novembro, 2026",
+                time: "08:00",
+                location: "Praia do Gonzaga, Santos - SP",
+                vacancies: 32,
+                organizer: "Fair Play Litoral",
+                description: "Encontro festivo e competitivo para duplas mistas. Kit com camiseta oficial do evento."
+            },
+            {
+                id: 5,
+                title: "Pedal Solidário MTB 35km",
+                category: "Ciclismo",
+                level: "Livre / Recreativo",
+                date: "2026-11-20",
+                dateFormatted: "20 de Novembro, 2026",
+                time: "06:30",
+                location: "Trilha da Serra, Jundiaí - SP",
+                vacancies: 75,
+                organizer: "Associação de Ciclismo",
+                description: "Percurso com belas paisagens, carro de apoio e mesa de frutas na chegada. Arrecadação de leite."
+            },
+            {
+                id: 6,
+                title: "Campeonato de Skate Street & Best Trick",
+                category: "Skate",
+                level: "Iniciante / Amador",
+                date: "2026-12-05",
+                dateFormatted: "05 de Dezembro, 2026",
+                time: "11:00",
+                location: "Skatepark Avenida Paulista, São Paulo - SP",
+                vacancies: 40,
+                organizer: "Associação Fair Play",
+                description: "Competição amadora com avaliação de juízes homologados e premiações em peças de skate."
+            }
+        ];
+
+        // MUDANÇA DINÂMICA DE ABAS (SPA)
+        function switchTab(tabId) {
+            // Oculta abas
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // Remove destaque dos botões da navbar
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Ativa aba
+            const targetPanel = document.getElementById(`tab-${tabId}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            // Destaca botão do menu
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+
+            // Esconde menu mobile se estiver aberto
+            document.getElementById('mobile-menu').classList.add('hidden');
+
+            // Scroll para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ALTERNAR MENU MOBILE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // RENDERIZAR CARDS DOS EVENTOS
+        function renderEvents(eventsArray) {
+            const grid = document.getElementById('events-list-grid');
+            const homeGrid = document.getElementById('home-featured-grid');
+            const noEvents = document.getElementById('no-events-view');
+            const countBadge = document.getElementById('events-count-badge');
+
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            
+            if (countBadge) {
+                countBadge.innerText = `${eventsArray.length} evento(s) encontrado(s)`;
+            }
+
+            if (eventsArray.length === 0) {
+                noEvents.classList.remove('hidden');
+            } else {
+                noEvents.classList.add('hidden');
+
+                eventsArray.forEach(ev => {
+                    const icon = getCategoryIcon(ev.category);
+                    
+                    const cardHTML = `
+                        <div class="bg-fair-cardBg border border-fair-cardBorder rounded-2xl p-6 flex flex-col justify-between card-hover">
+                            <div>
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="bg-emerald-100 text-fair-green font-bold text-xs px-3 py-1 rounded-full flex items-center space-x-1">
+                                        <i class="${icon} text-xs mr-1"></i>
+                                        <span>${ev.category}</span>
+                                    </span>
+                                    <span class="text-[11px] font-medium text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+                                        ${ev.level}
+                                    </span>
+                                </div>
+                                <h3 class="text-lg font-black text-slate-900 leading-snug mb-2">${ev.title}</h3>
+                                <p class="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">${ev.description}</p>
+                            </div>
+
+                            <div>
+                                <div class="space-y-2 py-3 border-t border-slate-200 text-xs text-slate-600 mb-4">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-regular fa-calendar text-fair-green"></i>
+                                        <span>${ev.dateFormatted} às ${ev.time}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-location-dot text-fair-green"></i>
+                                        <span class="truncate">${ev.location}</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 text-slate-500">
+                                        <i class="fa-solid fa-users text-fair-green"></i>
+                                        <span>${ev.vacancies} vagas restantes</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="joinEvent('${ev.title}')" class="w-full bg-fair-green hover:bg-fair-lightGreen text-white font-extrabold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                                    <span>Garantir Minha Vaga</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += cardHTML;
+                });
+            }
+
+            // Renderizar 3 primeiros na Home
+            if (homeGrid) {
+                homeGrid.innerHTML = '';
+                eventsDatabase.slice(0, 3).forEach(ev => {
+                    const icon = getCategoryIcon(ev.category);
+                    homeGrid.innerHTML += `
+                        <div class="bg-fair-cardBg border border-fair-cardBorder rounded-2xl p-6 flex flex-col justify-between card-hover">
+                            <div>
+                                <span class="bg-emerald-100 text-fair-green font-bold text-xs px-3 py-1 rounded-full inline-block mb-3">
+                                    <i class="${icon} mr-1"></i> ${ev.category}
+                                </span>
+                                <h3 class="text-lg font-bold text-slate-900 mb-2">${ev.title}</h3>
+                                <p class="text-xs text-slate-600 mb-4 line-clamp-2">${ev.description}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-fair-green mr-1"></i> ${ev.location}</p>
+                                <button onclick="switchTab('eventos')" class="w-full bg-fair-green text-white font-bold py-2 rounded-xl text-xs hover:bg-fair-lightGreen transition">
+                                    Ver Detalhes do Evento
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // ÍCONES DE MODALIDADE
+        function getCategoryIcon(cat) {
+            switch(cat) {
+                case 'Futebol': return 'fa-solid fa-futbol';
+                case 'Corrida': return 'fa-solid fa-person-running';
+                case 'Basquete': return 'fa-solid fa-basketball';
+                case 'Vôlei': return 'fa-solid fa-volleyball';
+                case 'Ciclismo': return 'fa-solid fa-bicycle';
+                case 'Skate': return 'fa-solid fa-person-skating';
+                default: return 'fa-solid fa-trophy';
+            }
+        }
+
+        // APLICAR FILTROS EM TEMPO REAL
+        function applyFilters() {
+            const keyword = document.getElementById('filter-keyword').value.toLowerCase();
+            const category = document.getElementById('filter-category').value;
+            const location = document.getElementById('filter-location').value.toLowerCase();
+            const level = document.getElementById('filter-level').value;
+
+            const filtered = eventsDatabase.filter(ev => {
+                const matchKey = ev.title.toLowerCase().includes(keyword) || ev.description.toLowerCase().includes(keyword);
+                const matchCat = category === "" || ev.category === category;
+                const matchLoc = ev.location.toLowerCase().includes(location);
+                const matchLevel = level === "" || ev.level === level;
+
+                return matchKey && matchCat && matchLoc && matchLevel;
+            });
+
+            renderEvents(filtered);
+        }
+
+        // REDEFINIR FILTROS
+        function resetFilters() {
+            document.getElementById('filter-keyword').value = '';
+            document.getElementById('filter-category').value = '';
+            document.getElementById('filter-location').value = '';
+            document.getElementById('filter-level').value = '';
+            renderEvents(eventsDatabase);
+        }
+
+        // CADASTRO DE NOVO EVENTO
+        function handleEventSubmission(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('new-title').value;
+            const category = document.getElementById('new-category').value;
+            const level = document.getElementById('new-level').value;
+            const vacancies = document.getElementById('new-vacancies').value;
+            const date = document.getElementById('new-date').value;
+            const time = document.getElementById('new-time').value;
+            const location = document.getElementById('new-location').value;
+            const description = document.getElementById('new-description').value;
+            const organizer = document.getElementById('new-organizer').value;
+
+            const dateObj = new Date(date + 'T00:00:00');
+            const dateFormatted = dateObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+            const newEv = {
+                id: Date.now(),
+                title: title,
+                category: category,
+                level: level,
+                date: date,
+                dateFormatted: dateFormatted,
+                time: time,
+                location: location,
+                vacancies: vacancies,
+                organizer: organizer,
+                description: description
+            };
+
+            eventsDatabase.unshift(newEv);
+            renderEvents(eventsDatabase);
+
+            document.getElementById('form-create-event').reset();
+            triggerToast('Evento cadastrado e divulgado com sucesso!');
+            switchTab('eventos');
+        }
+
+        // PARTICIPAR / ABRIR FORMULÁRIO DE INSCRIÇÃO
+        let selectedEventForRegistration = null;
+
+        function joinEvent(eventTitle) {
+            const event = eventsDatabase.find(ev => ev.title === eventTitle);
+
+            if (!event) {
+                triggerToast('Não foi possível localizar este evento.');
+                return;
+            }
+
+            if (Number(event.vacancies) <= 0) {
+                triggerToast('Este evento não possui mais vagas disponíveis.');
+                return;
+            }
+
+            selectedEventForRegistration = event;
+
+            document.getElementById('registration-event-title').innerText = event.title;
+            document.getElementById('registration-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+
+            setTimeout(() => document.getElementById('participant-name').focus(), 100);
+        }
+
+        function closeRegistrationModal() {
+            document.getElementById('registration-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function handleRegistrationSubmission(e) {
+            e.preventDefault();
+
+            if (!selectedEventForRegistration) {
+                return;
+            }
+
+            const participant = {
+                name: document.getElementById('participant-name').value.trim(),
+                email: document.getElementById('participant-email').value.trim(),
+                phone: document.getElementById('participant-phone').value.trim(),
+                city: document.getElementById('participant-city').value.trim()
+            };
+
+            // Reserva a vaga no evento
+            selectedEventForRegistration.vacancies =
+                Math.max(0, Number(selectedEventForRegistration.vacancies) - 1);
+
+            // Atualiza os cards para mostrar a quantidade de vagas restante
+            applyFilters();
+
+            const eventTitle = selectedEventForRegistration.title;
+            document.getElementById('registration-form').reset();
+            closeRegistrationModal();
+
+            triggerToast(`Inscrição confirmada para ${participant.name} em "${eventTitle}"!`);
+            selectedEventForRegistration = null;
+        }
+
+        // Fechar o formulário clicando fora do modal
+        document.getElementById('registration-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRegistrationModal();
+            }
+        });
+
+        // Fechar com a tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeRegistrationModal();
+            }
+        });
+
+        // FORMULÁRIO LOGIN
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            triggerToast('Login realizado com sucesso!');
+            switchTab('inicio');
+        }
+
+        // FORMULÁRIO CADASTRO
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            triggerToast('Cadastro efetuado! Seja bem-vindo à Associação Fair Play.');
+            switchTab('inicio');
+        }
+
+        // FORMULÁRIO CONTATO
+        function handleContactSubmission(e) {
+            e.preventDefault();
+            triggerToast('Sua mensagem foi enviada. Responderemos em breve!');
+            e.target.reset();
+        }
+
+        // EXIBIR TOAST
+        function triggerToast(text) {
+            const toast = document.getElementById('toast-notification');
+            const toastText = document.getElementById('toast-text');
+            
+            toastText.innerText = text;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // INICIALIZAÇÃO
+        window.onload = function() {
+            renderEvents(eventsDatabase);
+        };
+    </script>
+</body>
+</html>
